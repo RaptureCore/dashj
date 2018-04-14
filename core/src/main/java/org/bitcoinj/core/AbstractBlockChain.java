@@ -952,9 +952,9 @@ public abstract class AbstractBlockChain {
             if (storedPrev.getHeight()+1 >= 4001) { DiffMode = 4; }
         }
         else {
-            if (storedPrev.getHeight()+1 >= 68589) { DiffMode = 4; }
-            else if (storedPrev.getHeight()+1 >= 34140) { DiffMode = 3; }
-            else if (storedPrev.getHeight()+1 >= 15200) { DiffMode = 2; }
+            if (storedPrev.getHeight()+1 >= 1) { DiffMode = 4; }
+            else if (storedPrev.getHeight()+1 >= 1) { DiffMode = 3; }
+            else if (storedPrev.getHeight()+1 >= 1) { DiffMode = 2; }
         }
 
         if (DiffMode == 1) { checkDifficultyTransitions_V1(storedPrev, nextBlock); return; }
@@ -1162,6 +1162,7 @@ public abstract class AbstractBlockChain {
     }
     private void DarkGravityWave3(StoredBlock storedPrev, Block nextBlock) {
         /* current difficulty formula, darkcoin - DarkGravity v3, written by Evan Duffield - evan@darkcoin.io */
+
         StoredBlock BlockLastSolved = storedPrev;
         StoredBlock BlockReading = storedPrev;
         Block BlockCreating = nextBlock;
@@ -1359,6 +1360,7 @@ public abstract class AbstractBlockChain {
 
         long start = System.currentTimeMillis();
 
+
         if (BlockLastSolved == null || BlockLastSolved.getHeight() == 0 || (long)BlockLastSolved.getHeight() < PastBlocksMin)
         { verifyDifficulty(params.getMaxTarget(), storedPrev, nextBlock); }
 
@@ -1483,7 +1485,7 @@ public abstract class AbstractBlockChain {
             int height = storedPrev.getHeight() + 1;
             ///if(System.getProperty("os.name").toLowerCase().contains("windows"))
             //{
-            if(height <= 68589)
+            if(height <= 1)
             {
                 long nBitsNext = nextBlock.getDifficultyTarget();
 

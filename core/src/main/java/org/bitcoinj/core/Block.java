@@ -24,6 +24,7 @@ import com.hashengineering.crypto.X11;
 import org.bitcoinj.script.*;
 import org.slf4j.*;
 
+import com.rapture.NeoscryptWrapper;
 import javax.annotation.*;
 import java.io.*;
 import java.math.*;
@@ -122,7 +123,7 @@ public class Block extends Message {
         super(params);
         // Set up a few basic things. We are not complete after this though.
         version = setVersion;
-        difficultyTarget = 0x1e0fffffL;
+        difficultyTarget = 0x1e0ffff0L;
         time = System.currentTimeMillis() / 1000;
         prevBlockHash = Sha256Hash.ZERO_HASH;
 
@@ -225,13 +226,13 @@ public class Block extends Message {
         //return Utils.toNanoCoins(50, 0).shiftRight(height / context.getSubsidyDecreaseBlockCount());
         //return /*Utils.toNanoCoins(*/CoinDefinition.GetBlockReward(height)/*, 0)*/;
         double dDiff;
-        long nSubsidyBase;
+        long nSubsidyBase =14;
         int nPrevHeight = height - 1;
 
-
+/*
 
         if (nPrevHeight <= 4500 && params.getId().equals(NetworkParameters.ID_MAINNET)) {
-        /* a bug which caused diff to not be correctly calculated */
+        // a bug which caused diff to not be correctly calculated
             dDiff = (double)0x0000ffff / (double)(nPrevBits & 0x00ffffff);
         } else {
             dDiff = Utils.convertBitsToDouble(nPrevBits);
@@ -256,13 +257,40 @@ public class Block extends Message {
             if(nSubsidyBase > 25) nSubsidyBase = 25;
             else if(nSubsidyBase < 5) nSubsidyBase = 5;
         }
+        */
+        if(nPrevHeight < 15) {nSubsidyBase = 45000;}
+        if(nPrevHeight == 1999) {nSubsidyBase = 1000;}
+        if(nPrevHeight == 2999) {nSubsidyBase = 1000;}
+        if(nPrevHeight == 3999) {nSubsidyBase = 1000;}
+        if(nPrevHeight == 4999) {nSubsidyBase = 1000;}
+        if(nPrevHeight == 5999) {nSubsidyBase = 1000;}
+        if(nPrevHeight == 9999) {nSubsidyBase = 2000;}
+        if(nPrevHeight == 14999) {nSubsidyBase = 2000;}
+        if(nPrevHeight == 19999) {nSubsidyBase = 2000;}
+        if(nPrevHeight == 39999) {nSubsidyBase = 2000;}
+        if(nPrevHeight == 74999) {nSubsidyBase = 2000;}
+        if(nPrevHeight == 99999) {nSubsidyBase = 2000;}
+        if(nPrevHeight == 119999) {nSubsidyBase = 5000;}
+        if(nPrevHeight == 139999) {nSubsidyBase = 5000;}
+        if(nPrevHeight == 159999) {nSubsidyBase = 5000;}
+        if(nPrevHeight == 179999) {nSubsidyBase = 5000;}
+        if(nPrevHeight == 199999) {nSubsidyBase = 5000;}
+        if(nPrevHeight == 219999) {nSubsidyBase = 5000;}
+        if(nPrevHeight == 239999) {nSubsidyBase = 5000;}
+        if(nPrevHeight == 449999) {nSubsidyBase = 10000;}
+        if(nPrevHeight == 719999) {nSubsidyBase = 10000;}
+        if(nPrevHeight == 949999) {nSubsidyBase = 10000;}
+        if(nPrevHeight == 1199999) {nSubsidyBase = 10000;}
+
+
+
 
         // LogPrintf("height %u diff %4.2f reward %d\n", nPrevHeight, dDiff, nSubsidyBase);
         Coin nSubsidy = Coin.valueOf(nSubsidyBase * 100000000);
 
         // yearly decline of production by ~7.1% per year, projected ~18M coins max by year 2050+.
         for (int i = params.getSubsidyDecreaseBlockCount(); i <= nPrevHeight; i += params.getSubsidyDecreaseBlockCount()) {
-            nSubsidy = nSubsidy.subtract(nSubsidy.div(14));
+            nSubsidy = nSubsidy.subtract(nSubsidy.div((long) 14.285));
         }
 
         // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
@@ -320,7 +348,8 @@ public class Block extends Message {
         time = readUint32();
         difficultyTarget = readUint32();
         nonce = readUint32();
-        hash = Sha256Hash.wrapReversed(X11.x11Digest(payload, offset, cursor - offset));
+        //hash = Sha256Hash.wrapReversed(X11.x11Digest(payload, offset, cursor - offset));
+        hash = Sha256Hash.wrapReversed(NeoscryptWrapper.neoscryptDigest(payload, offset, cursor - offset));
         headerBytesValid = serializer.isParseRetainMode();
 
         // transactions
@@ -467,7 +496,8 @@ public class Block extends Message {
         try {
             ByteArrayOutputStream bos = new UnsafeByteArrayOutputStream(HEADER_SIZE);
             writeHeader(bos);
-            return Sha256Hash.wrapReversed(X11.x11Digest(bos.toByteArray()));
+            //return Sha256Hash.wrapReversed(X11.x11Digest(bos.toByteArray()));
+            return Sha256Hash.wrapReversed(NeoscryptWrapper.neoscryptDigest(bos.toByteArray()));
         } catch (IOException e) {
             throw new RuntimeException(e); // Cannot happen.
         }

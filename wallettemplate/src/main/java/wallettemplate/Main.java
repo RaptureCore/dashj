@@ -129,6 +129,7 @@ public class Main extends Application {
 
     public void setupWalletKit(@Nullable DeterministicSeed seed) {
         // If seed is non-null it means we are restoring from backup.
+        System.out.println("WALLET FILE " + WALLET_FILE_NAME);
         bitcoin = new WalletAppKit(params, new File("."), WALLET_FILE_NAME) {
             @Override
             protected void onSetupCompleted() {
@@ -136,6 +137,8 @@ public class Main extends Application {
                 // their own money!
                 bitcoin.wallet().allowSpendingUnconfirmedTransactions();
                 Platform.runLater(controller::onBitcoinSetup);
+                System.out.println("WALLET SETUP " );
+
             }
         };
         // Now configure and start the appkit. This will take a second or two - we could show a temporary splash screen

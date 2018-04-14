@@ -26,8 +26,11 @@ include $(CLEAR_VARS)
 
 LOCAL_C_INCLUDES := sources/include
 
-LOCAL_MODULE    := x11
-LOCAL_SRC_FILES := hashblock.cpp blake.c bmw.c groestl.c jh.c keccak.c skein.c cubehash.c echo.c luffa.c shavite.c simd.c
+#LOCAL_MODULE    := x11
+#LOCAL_SRC_FILES := hashblock.cpp blake.c bmw.c groestl.c jh.c keccak.c skein.c cubehash.c echo.c luffa.c shavite.c simd.c
+
+LOCAL_MODULE    := neoscryptwrapper
+LOCAL_SRC_FILES := NeoscryptWrapper.c neoscrypt.c
 
 include $(BUILD_SHARED_LIBRARY)
 

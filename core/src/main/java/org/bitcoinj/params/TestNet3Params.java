@@ -62,7 +62,7 @@ public class TestNet3Params extends AbstractBitcoinNetParams {
         String genesisHash = genesisBlock.getHashAsString();
 
         if(CoinDefinition.supportsTestNet)
-            checkState(genesisHash.equals(CoinDefinition.testnetGenesisHash));
+           checkState(genesisHash.equals(CoinDefinition.testnetGenesisHash));
         alertSigningKey = HEX.decode(CoinDefinition.TESTNET_SATOSHI_KEY);
 
         dnsSeeds = CoinDefinition.testnetDnsSeeds;

@@ -399,7 +399,7 @@ public class BlockChainTest {
         b2.setMerkleRoot(Sha256Hash.wrap("0d6d332e68eb8ecc66a5baaa95dc4b10c0b32841aed57dc99a5ae0b2f9e4294d"));
         b2.setNonce(6523);
         b2.setTime(1398712772L);
-        b2.setDifficultyTarget(0x1e0ffff0);
+        b2.setDifficultyTarget(0x1e0ffff0L);
         b2.setPrevBlockHash(Sha256Hash.wrap("0000047d24635e347be3aaaeb66c26be94901a2f962feccd4f95090191f208c1"));
         assertEquals("00000c6264fab4ba2d23990396f42a76aa4822f03cbc7634b79f4dfea36fccc2", b2.getHashAsString());
         b2.verifyHeader();
